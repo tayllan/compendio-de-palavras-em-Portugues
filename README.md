@@ -34,7 +34,10 @@ O portal [Domínio Público](www.dominiopublico.gov.br) possui centenas de milha
 Um ponto importante a ser levado em consideração é que, por enquanto, estou convertendo os livros de PDF para puro texto sem nenhuma forma de tratamento, o que significa que palavras em outros idiomas e outros tipos de poluição acabam sendo utilizados na geração do compêndio final.
 
 ## Trabalhos Relacionados
-TODO
+*[Frequência de ocorrência de letras no Português](http://www.numaboa.com.br/criptografia/criptoanalise/310-frequencia-portugues?showall=&limitstart=) - Uma análisa bacana, mas com muito poucas palavras e sem levar em consideração letras acentuadas (á, ê, etc...).
+*[Análise de Frequências da Língua Portuguesa](www.mat.uc.pt/~pedro/lectivso/CodigosCriptografia1011/interTIC07pqap.pdf) - Um bom artigo com uma análise mais profunda e com maiores motivações, mas ainda assim com poucas palavras.
+*[Análise de Frequências de Línguas](http://www.lockabit.coppe.ufrj.br/sites/lockabit.coppe.ufrj.br/files/publicacoes/lockabit/analise_freq.pdf) - Um artigo similar ao anterior, e também com poucas palavras.
+*[Dicionário br.ispell](http://www.ime.usp.br/~ueda/br.ispell/) - Compêndio com mais de 260 mil palavras em Português brasileiro.
 
 ## Licença
 [![Creative Commons License](http://i.creativecommons.org/l/by/4.0/88x31.png)](http://creativecommons.org/licenses/by/4.0/)
