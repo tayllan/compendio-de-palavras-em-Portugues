@@ -21,7 +21,8 @@ Eu quero baixar TODOS os mais de 137 mil livros disponíveis no portal [Domínio
 Minha ideia inicial é baixar os livros em PDF, convertê-los para texto puro (sem nenhuma forma de tratamento por enquanto) e filtrar as palavras desejadas de dentro dos arquivos de texto utilizando Python.
 
 ## O que já foi feito !
-**O que está descrito abaixo continua sendo a última modificação no [compêndio](https://github.com/tayllan/compendio-de-palavras-em-Portugues/blob/master/compendio.txt), entretanto o arquivo [main.py](https://github.com/tayllan/compendio-de-palavras-em-Portugues/blob/master/main.py) foi modificado para se tornar mais útil futuramente**
+**O que está descrito abaixo continua sendo a última modificação no [compêndio](https://github.com/tayllan/compendio-de-palavras-em-Portugues/blob/master/compendio.txt), entretanto o arquivo [main.py](https://github.com/tayllan/compendio-de-palavras-em-Portugues/blob/master/main.py) foi modificado para se tornar mais útil futuramente!**
+
 Utilizei o comando `wget` para baixar os livros do [Domínio Público](www.dominiopublico.gov.br). O comando completo foi:
 `wget -R gif,png,jpg,jpeg,jsp,asp,js,css,html -r -l 4 -nd http://www.dominiopublico.gov.br/pesquisa/PesquisaObraForm.do`.
 
