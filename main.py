@@ -34,7 +34,7 @@ def get_links_list_from_html_pages(input_path):
 
 # espera uma lista (ou um set) com os links e o nome dos arquivos separados por tab (\t)
 # por exemplo: link \t nome_do_arquivo
-def download_pdfs(output_path, links):
+def download_pdfs(path_to_cookies, output_path, links):
 	os.chdir(output_path)
 
 	for link in links:
@@ -43,7 +43,9 @@ def download_pdfs(output_path, links):
 		filename = "'" + aux[1] + "'"
 
 		os.system(
-			'wget -O ' + filename + ' -R ico,gif,png,jpg,jpeg,jsp,asp,js,css,html -r -l 1 -nd ' + url
+			'wget --load-cookies ' +
+			path_to_cookies + ' -O ' + filename +
+			'.pdf -R ico,gif,png,jpg,jpeg,jsp,asp,js,css,html -l 1 -nd ' + url
 		)
 
 def convert_pdfs_to_txts(input_path, output_path):
@@ -78,7 +80,7 @@ option = -1
 while not(0 <= option <= 4):
 	print('Estes são os métodos disponíveis e seus valores:')
 	print('1 - Download páginas html do dominiopublico.gov.br de livos em Português: <output_path>')
-	print('2 - Download todos os PDFs a partir das páginas html: <input_path> <output_path>')
+	print('2 - Download todos os PDFs a partir das páginas html: <input_path> <output_path> <path_to_cookies (absolute)>')
 	print('3 - Converter todos os PDFs para TXTs: <input_path> <output_path>')
 	print('4 - Criar o Compêndio a partir dos arquivos TXT: <input_path> <output_path> [output_file (default: compendio.txt)]')
 	print('0 - Sair!')
@@ -94,7 +96,7 @@ while not(0 <= option <= 4):
 		else:
 			option = -1
 	elif option is 2:
-		if len(args) >= 3:
+		if len(args) >= 4:
 			links = get_links_list_from_html_pages(args[1])
 			download_pdfs(args[2], links)
 		else:
