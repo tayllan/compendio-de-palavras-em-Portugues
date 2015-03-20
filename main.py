@@ -98,7 +98,7 @@ while not(0 <= option <= 4):
 	elif option is 2:
 		if len(args) >= 4:
 			links = get_links_list_from_html_pages(args[1])
-			download_pdfs(args[2], links)
+			download_pdfs(args[3], args[2], links)
 		else:
 			option = -1
 	elif option is 3:
