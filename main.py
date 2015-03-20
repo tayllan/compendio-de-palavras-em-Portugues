@@ -43,9 +43,7 @@ def download_pdfs(path_to_cookies, output_path, links):
 		filename = "'" + aux[1] + "'"
 
 		os.system(
-			'wget --load-cookies ' +
-			path_to_cookies + ' -O ' + filename +
-			'.pdf -R ico,gif,png,jpg,jpeg,jsp,asp,js,css,html -l 1 -nd ' + url
+			'wget --load-cookies ' + path_to_cookies + ' -O ' + filename + ' -l 1 -nd ' + url
 		)
 
 def convert_pdfs_to_txts(input_path, output_path):
@@ -75,40 +73,37 @@ def create_compendium_of_unique_words(input_path, output_path, output_file):
 	for word in unique_words:
 		f.write(word + '\n')
 
-option = -1
+print('------------------------------------------------------------------------------------------------------\n')
+print('Utilização: python3 main.py <código_opção> [<parâmetro1> ...]\n')
+print('Estes são os métodos disponíveis e seus códigos:\n')
+print('1 - Download páginas html do dominiopublico.gov.br de livos em Português: <OUTPUT_PATH>')
+print('2 - Download todos os PDFs a partir das páginas html: <INPUT_PATH> <OUTPUT_PATH> <PATH_TO_COOKIES (absolute)>')
+print('3 - Converter todos os PDFs para TXTs: <INPUT_PATH> <OUTPUT_PATH>')
+print('4 - Criar o Compêndio a partir dos arquivos TXT: <INPUT_PATH> <OUTPUT_PATH> [OUTPUT_FILE (default: compendio.txt)]\n')
+print('------------------------------------------------------------------------------------------------------')
 
-while not(0 <= option <= 4):
-	print('Estes são os métodos disponíveis e seus valores:')
-	print('1 - Download páginas html do dominiopublico.gov.br de livos em Português: <output_path>')
-	print('2 - Download todos os PDFs a partir das páginas html: <input_path> <output_path> <path_to_cookies (absolute)>')
-	print('3 - Converter todos os PDFs para TXTs: <input_path> <output_path>')
-	print('4 - Criar o Compêndio a partir dos arquivos TXT: <input_path> <output_path> [output_file (default: compendio.txt)]')
-	print('0 - Sair!')
+args = sys.argv
+option = int(args[1]) if len(args) >= 2 else 0
 
-	args = input('Digite o código do método desejado e os argumentos esperados: ').split(' ')
-	option = int(args[0])
-
-	if option is 0:
-		sys.exit()
-	elif option is 1:
-		if len(args) >= 2:
-			download_html_pages(args[1])
-		else:
-			option = -1
-	elif option is 2:
-		if len(args) >= 4:
-			links = get_links_list_from_html_pages(args[1])
-			download_pdfs(args[3], args[2], links)
-		else:
-			option = -1
-	elif option is 3:
-		if len(args) >= 3:
-			convert_pdfs_to_txts(args[1], args[2])
-		else:
-			option = -1
-	elif option is 4:
-		if len(args) >= 3:
-			output_file = args[3] if len(args) >= 4 else 'compendio.txt'
-			create_compendium_of_unique_words(args[1], args[2], output_file)
-		else:
-			option = -1
+if option is 1:
+	if len(args) >= 3:
+		download_html_pages(args[2])
+	else:
+		option = -1
+elif option is 2:
+	if len(args) >= 5:
+		links = get_links_list_from_html_pages(args[2])
+		download_pdfs(args[4], args[3], links)
+	else:
+		option = -1
+elif option is 3:
+	if len(args) >= 4:
+		convert_pdfs_to_txts(args[2], args[3])
+	else:
+		option = -1
+elif option is 4:
+	if len(args) >= 4:
+		output_file = args[4] if len(args) >= 5 else 'compendio.txt'
+		create_compendium_of_unique_words(args[2], args[3], output_file)
+	else:
+		option = -1
