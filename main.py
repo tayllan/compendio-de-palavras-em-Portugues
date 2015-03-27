@@ -1,5 +1,4 @@
 import os, sys, re, time
-from pprint import pprint
 
 def download_html_pages(output_path):
 	os.chdir(output_path)
@@ -30,32 +29,48 @@ def get_links_list_from_html_pages(input_path):
 	return links
 
 # baixa os pdfs a partir dos links html utilizando o selenium para emular navegação dentro do dominiopublico.org.br (e por isso é necessário o email e a senha)
-def download_pdfs(output_path, links, email, password):
+def download_pdfs(output_path, links, email, password, proxy_host = None, proxy_port = None):
 	from selenium import webdriver
 
 	profile = webdriver.firefox.firefox_profile.FirefoxProfile()
+
+	if proxy_host is not None and proxy_port is not None:
+		profile.set_preference('network.proxy.type', 1)
+		profile.set_preference('network.proxy.http', proxy_host)
+		profile.set_preference('network.proxy.http_port', int(proxy_port))
+		profile.set_preference('general.useragent.override','whater_useragent')
+		profile.update_preferences()
+
 	profile.set_preference('pdfjs.disabled', True)
 	profile.set_preference('browser.helperApps.neverAsk.saveToDisk', 'application/pdf')
 	profile.set_preference('browser.download.folderList', 2)
 	profile.set_preference('browser.download.dir', output_path)
 	driver = webdriver.Firefox(firefox_profile = profile)
+	count = 1
 
 	for link in links:
+		time.sleep(1)
 		try:
 			driver.get(link)
+			print(str(count) + ': ' + link)
+			count = count + 1
 
-			email = driver.find_element_by_name('ds_email')
-			password = driver.find_element_by_name('ds_senha')
+			email_element = driver.find_element_by_name('ds_email')
+			password_element = driver.find_element_by_name('ds_senha')
 			url = driver.find_element_by_name('ds_url')
 			destination = url.get_attribute('value')
 
-			email.send_keys(email)
-			password.send_keys(password)
+			email_element.send_keys(email)
+			password_element.send_keys(password)
 
 			driver.find_element_by_css_selector('tbody tbody a').click()
 			driver.get('http://www.dominiopublico.gov.br/' + destination)
 		except:
 			pass
+
+	# limpando os arquivos duplicados (ou triplicados, etc)
+	os.chdir(output_path)
+	os.system('rm *\).pdf')
 
 def convert_pdfs_to_txts(input_path, output_path):
 	os.chdir(input_path)
@@ -86,7 +101,7 @@ print('-------------------------------------------------------------------------
 print('Utilização: python3 main.py <código_opção> [<parâmetro1> ...]\n')
 print('Estes são os métodos disponíveis e seus códigos:\n')
 print('1 - Download páginas html do dominiopublico.gov.br de livos em Português: <OUTPUT_PATH>')
-print('2 - Download todos os PDFs a partir das páginas html: <INPUT_PATH> <OUTPUT_PATH> <EMAIL> <PASSWORD>')
+print('2 - Download todos os PDFs a partir das páginas html: <INPUT_PATH> <OUTPUT_PATH> <EMAIL> <PASSWORD> [PROXY_HOST (se você estiver atrás de um Proxy)] [PROXY_PORT]')
 print('3 - Converter todos os PDFs para TXTs: <INPUT_PATH> <OUTPUT_PATH>')
 print('4 - Criar o Compêndio a partir dos arquivos TXT: <INPUT_PATH> <OUTPUT_PATH> [OUTPUT_FILE (default: compendio.txt)]\n')
 print('------------------------------------------------------------------------------------------------------')
@@ -102,7 +117,11 @@ if option is 1:
 elif option is 2:
 	if len(args) >= 6:
 		links = get_links_list_from_html_pages(args[2])
-		download_pdfs(args[3], links, args[4], args[5])
+
+		if len(args) >= 8:
+			download_pdfs(args[3], links, args[4], args[5], args[6], args[7])
+		else:
+			download_pdfs(args[3], links, args[4], args[5])
 	else:
 		option = -1
 elif option is 3:
